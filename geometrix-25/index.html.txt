@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Asisten AI Keren</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 600px; margin: 50px auto; padding: 20px; background-color: #f4f4f9; }
+        h1 { color: #333; text-align: center; }
+        textarea { width: 100%; height: 100px; padding: 10px; box-sizing: border-box; border-radius: 5px; border: 1px solid #ccc; }
+        button { background-color: #4CAF50; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; width: 100%; margin-top: 10px; font-size: 16px; }
+        button:hover { background-color: #45a049; }
+        #output { margin-top: 20px; padding: 15px; background: white; border-radius: 5px; border: 1px solid #ddd; white-space: pre-wrap; display: none; }
+    </style>
+</head>
+<body>
+
+    <h1>Tanya AI Studio</h1>
+    <textarea id="userInput" placeholder="Ketik pertanyaanmu di sini..."></textarea>
+    <button onclick="kirimKeAI()">Tanya AI</button>
+
+    <div id="output"></div>
+
+    <script>
+        async function kirimKeAI() {
+            const input = document.getElementById('userInput').value;
+            const outputBox = document.getElementById('output');
+            
+            if (!input) return alert('Ketik sesuatu dulu, bos!');
+            
+            outputBox.style.display = 'block';
+            outputBox.innerText = 'Sedang berpikir...';
+
+            try {
+                // Kita menembak ke '/api/generate', bukan langsung ke Google. Ini rahasia keamanannya!
+                const response = await fetch('/api/generate', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ prompt: input })
+                });
+
+                const data = await response.json();
+                outputBox.innerText = data.jawaban || "Waduh, ada masalah.";
+            } catch (error) {
+                outputBox.innerText = 'Error: Gagal terhubung ke server.';
+            }
+        }
+    </script>
+</body>
+</html>
